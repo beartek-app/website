@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<body class="_top_body">
+    <link rel="stylesheet" href="top/top.css">
+
+    <div class="_top_body_title">
+        <img src="top/logo.png"/>
+        <h1>BearTek</h1>
+    </div>
+    <div class="_top_body_menu">
+        <a class="home" href="">Home</a>
+        <a class="lifeGuide" href="">LifeGuide</a>
+        <a class="smartWatch" href="">SmartWatch</a>
+        <a class="tracking" href="">Tracking</a>
+    </div>
+    <script>
+        document.getElementsByClassName("home")[0].addEventListener("click", function(event) {
+            event.preventDefault();
+            window.history.pushState(null, "", window.location.href.split('?')[0] + "?home");
+        });
+        document.getElementsByClassName("lifeGuide")[0].addEventListener("click", function(event) {
+            event.preventDefault();
+            window.history.pushState(null, "", window.location.href.split('?')[0] + "?lifeguide");
+        });
+        document.getElementsByClassName("smartWatch")[0].addEventListener("click", function(event) {
+            event.preventDefault();
+            window.history.pushState(null, "", window.location.href.split('?')[0] + "?smartwatch");
+        });
+        document.getElementsByClassName("tracking")[0].addEventListener("click", function(event) {
+            event.preventDefault();
+            window.history.pushState(null, "", window.location.href.split('?')[0] + "?tracking");
+        });
+    </script>
+</body>
+
+</html>

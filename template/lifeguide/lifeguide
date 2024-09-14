@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+
+<body class="_lifeguide_body">
+    <link rel="stylesheet" href="template/lifeguide/lifeguide.css">
+
+    <iframe src="https://lifeguide.beartek.app/" sandbox="allow-popups allow-same-origin allow-scripts"></iframe>
+</body>
+
+</html>

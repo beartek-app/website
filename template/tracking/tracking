@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+
+<body class="_tracking_body">
+    <link rel="stylesheet" href="template/tracking/tracking.css">
+
+    <iframe src="https://tracking.beartek.app/" sandbox="allow-popups allow-same-origin allow-scripts"></iframe>
+</body>
+
+</html>

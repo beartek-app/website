@@ -1,0 +1,27 @@
+"use strict";async function route(){const vdom=document.getElementById("main_vDom_container");if(vdom!==null){switch(window.location.search.substring(1)){case"home":vdom.setAttribute("target","template/home/home");break;case"lifeguide":vdom.setAttribute("target","template/lifeguide/lifeguide");break;case"smartwatch":vdom.setAttribute("target","template/smartwatch/smartwatch");break;case"tracking":vdom.setAttribute("target","template/tracking/tracking");break;}}
+await smartLoad();}
+(function(){const originalPushState=window.history.pushState;const originalReplaceState=window.history.replaceState;window.history.pushState=function(...args){originalPushState.apply(this,args);window.dispatchEvent(new Event('statechange'));};window.history.replaceState=function(...args){originalReplaceState.apply(this,args);window.dispatchEvent(new Event('statechange'));};window.addEventListener('statechange',function(){const vdom=document.getElementById("main_vDom_container");if(vdom==null){throw new Error("main_vDom_container == null");}
+if(vdom.tagName==="DIV"){unloadDOM(vdom);}
+route();});})();async function aiohttp(method,url,headers,body){const response=await fetch(url,{method:method,headers:headers,body:body});if(!response.ok){throw new Error("!response.ok");}
+return response;}
+function getParentPath(){const currentPath=window.location.pathname;const parentPath=currentPath.substring(0,currentPath.lastIndexOf("/"));return window.location.origin+parentPath+"/";}
+function executeScripts(container){const scripts=container.querySelectorAll('script');scripts.forEach(script=>{if(script.src){const newScript=document.createElement('script');newScript.src=script.src;newScript.async=script.async;document.body.appendChild(newScript);document.body.removeChild(newScript);}
+else{try{setTimeout(()=>{eval(script.textContent||"");},0);}
+catch(e){console.error(e);}}});}
+function unloadDOM(element){const id=element.getAttribute("id");const virtualDocument=document.createElement("next");if(id!==null){virtualDocument.setAttribute("id",id);}
+element.replaceWith(virtualDocument);}
+function loadDOM(element,identity){const vdom="vdom_"+identity;const virtualDocument=document.createElement("div");[...element.attributes].forEach(attr=>{if(attr.name!=='id'){virtualDocument.setAttribute(attr.name,attr.value);}});const classNames=virtualDocument.getAttribute("class");if(classNames!==null){virtualDocument.setAttribute("class",vdom+" "+classNames);}
+else{virtualDocument.setAttribute("class",vdom);}
+while(element.firstChild){virtualDocument.appendChild(element.firstChild);}
+element.replaceWith(virtualDocument);executeScripts(virtualDocument);return virtualDocument;}
+function rewriteRelativeURLs(doc,baseUrl){const elementsWithUrls=doc.querySelectorAll('[href], [src]');elementsWithUrls.forEach(element=>{const urlAttr=element.hasAttribute('href')?'href':'src';let url=element.getAttribute(urlAttr);if(url&&!url.startsWith('http://')&&!url.startsWith('https://')&&!url.startsWith('//')&&!url.startsWith('data:')){const absoluteUrl=new URL(url,baseUrl).href;element.setAttribute(urlAttr,absoluteUrl);}});}
+function waitForAllResourcesToLoad(container){return new Promise((resolve)=>{const resources=container.querySelectorAll('img, audio, video, iframe');let loadedCount=0;const totalResources=resources.length;if(totalResources===0){resolve();return;}
+resources.forEach((resource)=>{if(resource.complete||resource.readyState===4){loadedCount++;if(loadedCount===totalResources){resolve();}}
+else{const onLoadOrError=()=>{loadedCount++;if(loadedCount===totalResources){resolve();}
+resource.removeEventListener('load',onLoadOrError);resource.removeEventListener('error',onLoadOrError);};resource.addEventListener('load',onLoadOrError);resource.addEventListener('error',onLoadOrError);}});});}
+async function smartLoad(){const baseUrl=getParentPath();let dynamicComponents=document.getElementsByTagName("next");while(dynamicComponents.length>0){for(let dynamicComponent of dynamicComponents){const id=dynamicComponent.getAttribute("id");const endpoint=dynamicComponent.getAttribute("target");if(endpoint==null){throw new Error("endpoint == null");}
+const parser=new DOMParser();let result=await(await aiohttp("get",baseUrl+endpoint)).text();const doc=parser.parseFromString(result,"text/html");rewriteRelativeURLs(doc,baseUrl);const virtualDocument=loadDOM(doc.body,endpoint);if(id!==null){virtualDocument.setAttribute("id",id);}
+dynamicComponent.replaceWith(virtualDocument);await waitForAllResourcesToLoad(virtualDocument);}}}
+(async()=>{if(window.location.search.substring(1)===""){window.history.replaceState(null,"",window.location.href.split('?')[0]+"?home");}
+await route();const progressFill=document.querySelector('.progress-fill');const onloadElement=document.getElementById("onload");const startTime=Date.now();const progressDuration=500;const elapsedTime=Date.now()-startTime;if(elapsedTime>=progressDuration){onloadElement?.classList.add('fade-out');setTimeout(()=>{onloadElement?.remove();},500);}
+else{progressFill.style.animation='none';progressFill.style.width='100%';const remainingTime=progressDuration-elapsedTime;setTimeout(()=>{onloadElement?.classList.add('fade-out');setTimeout(()=>{onloadElement?.remove();},500);},remainingTime);}})();

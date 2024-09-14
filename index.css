@@ -1,0 +1,71 @@
+:root {
+    font-family: Inter, sans-serif;
+    font-feature-settings: 'liga' 1, 'calt' 1;
+    /* fix for Chrome */
+}
+
+@supports (font-variation-settings: normal) {
+    :root {
+        font-family: InterVariable, sans-serif;
+    }
+}
+
+html,
+body {
+    margin: 0;
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+#onload {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background: white;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8em;
+    background-color: rgb(231, 238, 233);
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-fill {
+    width: 50%;
+    height: 100%;
+    background-color: rgb(39, 93, 56);
+    position: absolute;
+    animation: scroll-right 2s linear infinite;
+}
+
+@keyframes scroll-right {
+    0% {
+        left: -50%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+#onload.fade-out {
+    animation: fadeSlideUp 0.75s forwards;
+}
+
+@keyframes fadeSlideUp {
+    from {
+        opacity: 1;
+        /* transform: translateY(0); */
+    }
+
+    to {
+        opacity: 0;
+        /* transform: translateY(-10%); */
+    }
+}
